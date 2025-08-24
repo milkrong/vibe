@@ -1,19 +1,31 @@
-import { prisma } from '../lib/db';
+'use client';
 
-export default async function Home() {
-  const users = await prisma.user.findMany();
+import { Button } from '@/components/ui/button';
+import { useTRPC } from '@/trpc/client';
+import { useMutation } from '@tanstack/react-query';
+import { toast } from 'sonner';
+
+export default function Home() {
+  const trpc = useTRPC();
+  const invoke = useMutation(
+    trpc.invoke.mutationOptions({
+      onSuccess: () => {
+        toast.success('Invoked');
+      },
+    })
+  );
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center -mt-16">
       <h1 className="text-4xl font-bold mb-8 font-[family-name:var(--font-geist-sans)] text-[#333333]">
-        Superblog
+        Super blog
       </h1>
-      <ol className="list-decimal list-inside font-[family-name:var(--font-geist-sans)]">
-        {users.map((user) => (
-          <li key={user.id} className="mb-2">
-            {user.name}
-          </li>
-        ))}
-      </ol>
+      <Button
+        disabled={invoke.isPending}
+        onClick={() => invoke.mutate({ test: 'world' })}
+      >
+        Invoke
+      </Button>
     </div>
   );
 }
