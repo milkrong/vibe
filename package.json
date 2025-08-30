@@ -12,6 +12,7 @@
     "seed": "tsx prisma/seed.ts"
   },
   "dependencies": {
+    "@e2b/code-interpreter": "^2.0.0",
     "@inngest/agent-kit": "^0.9.0",
     "@prisma/client": "^6.11.1",
     "@prisma/extension-accelerate": "^2.0.2",
